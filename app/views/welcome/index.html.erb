@@ -68,7 +68,7 @@
       // sets up the map object using mapOptions properties, creates 'home base' marker, and adds listener to the map object
       // so that on click you create a new marker.
       function initialize() {
-        
+        detectBrowser();
         var mapOptions = {
           zoom: 10,
           center: new google.maps.LatLng(37.736414, -122.247953)
