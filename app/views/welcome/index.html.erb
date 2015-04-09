@@ -42,6 +42,16 @@
         map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
         createMarker({lat: 37.736414, lng: -122.247953}, map, "Home Base");
+
+       var panoramaOptions = {
+  			position: {lat: 37.736414, lng: -122.247953},
+  			pov: {
+    			heading: 34,
+    			pitch: 10
+  					}
+			};
+		var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+		map.setStreetView(panorama);
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
@@ -55,8 +65,10 @@
     </script>
   </head>
   <body>
+
     <div id="map-canvas" style="height:75%;width:100%"></div>
-    <div id="picture-container" style="background-color:#333333;height:75%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4); position:absolute"></div>
+    <div id="picture-container" style="background-color:#333333;height:75%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4); position:absolute">
+    	<div id="pano" style="height:80%;width:20%"></div></div>
   </body>
 </html>
 
