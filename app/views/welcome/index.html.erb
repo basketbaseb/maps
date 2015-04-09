@@ -51,16 +51,23 @@
   					   }
 			     };
          
-           var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-           panArray.push(panorama);
+           // tests to see if street view panorama exists before displaying image in image-container.
+           var svTest = new google.maps.StreetViewService();
+           svTest.getPanoramaByLocation(coords, 50, function(data,status){
+            if(status == "OK"){
+               var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+               panArray.push(panorama);
+               if( $("#image-container").css('display', 'none')){
+                    $('#image-container').animate({ 'bottom' : '0px' });     
+                    $("#image-container").toggle();          
+            }
+            }
+            else{}
+           });
+          
 
            // on marker click scroll up image-container if image-container is hidden
-           if( $("#image-container").css('display', 'none')){
-                    $('#image-container').animate({
-                        'bottom' : '0px'    
-                    });     
-           $("#image-container").toggle();          
-            }
+           
             //$("#map-canvas").height("75%"); 
         })
       }
