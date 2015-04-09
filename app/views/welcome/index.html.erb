@@ -30,7 +30,16 @@
         });
         var info = createInfoWindow(marker.title);
         google.maps.event.addDomListener(marker,'click', function(){
-        	info.open(map, marker);
+        	//info.open(map, marker);
+        	var panoramaOptions = {
+  			position: coords,
+  			pov: {
+    			heading: 0,
+    			pitch: -25
+  					}
+			};
+			var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+			map.setStreetView(panorama);
         })
       }
 
@@ -43,15 +52,7 @@
             mapOptions);
         createMarker({lat: 37.736414, lng: -122.247953}, map, "Home Base");
 
-       var panoramaOptions = {
-  			position: {lat: 37.736414, lng: -122.247953},
-  			pov: {
-    			heading: 34,
-    			pitch: 10
-  					}
-			};
-		var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-		map.setStreetView(panorama);
+       
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
