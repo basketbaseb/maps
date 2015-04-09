@@ -14,12 +14,24 @@
     <script>
       var map;
       var marker;
+
+      function createInfoWindow(text){
+      	var infowindow = new google.maps.InfoWindow({
+      		content: text
+      	})
+      	return infowindow;
+      }
+
       function createMarker(coords, map, title) {
         marker = new google.maps.Marker({
           position: coords,
           map: map,
           title: title
         });
+        var info = createInfoWindow(marker.title);
+        google.maps.event.addDomListener(marker,'click', function(){
+        	info.open(map, marker);
+        })
       }
 
       function initialize() {
@@ -43,7 +55,8 @@
     </script>
   </head>
   <body>
-    <div id="map-canvas"></div>
+    <div id="map-canvas" style="height:75%;width:100%"></div>
+    <div id="picture-container"></div>
   </body>
 </html>
 
