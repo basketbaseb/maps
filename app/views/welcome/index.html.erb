@@ -89,7 +89,8 @@
   			   pov: {
     			   heading: 0,
     			   pitch: 0
-  					   }
+  					   },
+           scrollwheel: false
 			     };
          
            // tests to see if street view panorama exists before displaying image in image-container.
@@ -103,7 +104,7 @@
                     $("#image-container").toggle();
                     var divID = "pano" + divCount;
                     $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions);  
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
                    // if ($('#pano1').children().length == 0){
                    //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("'pano'+divCount"), panoramaOptions);      
                    //  }
