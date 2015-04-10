@@ -33,7 +33,7 @@
 }
 
 .box {
-    width: 19.5%;
+    width: 20%;
     height: 100%;
     vertical-align: top;
     display: inline-block;
@@ -116,7 +116,7 @@
                         $("#image-container").css('overflow-x', 'scroll');
                     }
                     // here we actually get the street pano and display it in the pano container with id=divID
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
+                    var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
                     panArray.push(panorama);
                     divCount++;
             }
