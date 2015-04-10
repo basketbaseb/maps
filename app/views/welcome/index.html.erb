@@ -55,22 +55,22 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
       var map;
-      var marker;
+      var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
       var markerArray = [];
       var panArray = [];
       var geocoder;
 
       function createInfoWindow(text){
-      	var infowindow = new google.maps.InfoWindow({
+      	var infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
-      	return infowindow;
+      	return infoWindow;
       }
 
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
-        marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: coords,
           map: map
         });
@@ -88,6 +88,12 @@
     			   pitch: 0
   					   }
 			     };
+
+             // check if there is an info window for no street view
+            if(noStreetViewInfoWindow != null) {
+              // if there is, close it
+              noStreetViewInfoWindow.close();
+            }
          
            // tests to see if street view panorama exists before displaying image in image-container.
            var svTest = new google.maps.StreetViewService();
@@ -113,16 +119,14 @@
                     else{
                     var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
                     }
-            }
-            }
+
             else{
+              // If no street view available, make an info window at the marker saying that
               var contentString = "No Street View Available";
-              var infowindow = new google.maps.InfoWindow({
+              noStreetViewInfoWindow = new google.maps.InfoWindow({
                 content: contentString
-                });
-              infowindow.open(map,marker);
-
-
+              });
+              noStreetViewInfoWindow.open(map,marker);
             }
            });
           
