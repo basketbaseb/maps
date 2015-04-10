@@ -11,8 +11,9 @@
         padding: 0px
       }
       body{
-        overflow: hidden; /* no scrollbar nonsense */
+        overflow: hidden;  /*no scrollbar nonsense*/ 
       }
+
       /*.pano{
       	display:block;
       	float:right;
@@ -29,19 +30,20 @@
     /*min-width: 612px;*/
 }
 
-.box1, .box2, .box3, .box4, .box5 {
+.box {
     width: 19.5%;
     height: 100%;
     vertical-align: top;
     display: inline-block;
     *display: inline;
-    zoom: 1
+    zoom: 1;
+
 }
 .stretch {
     width: 100%;
     display: inline-block;
     font-size: 0;
-    line-height: 0
+    line-height: 0;
 }
 
 /*.box1, .box2, .box3, .box5, .box4 {
@@ -59,6 +61,7 @@
       var markerArray = [];
       var panArray = [];
       var geocoder;
+      var divCount = 0;
 
       function createInfoWindow(text){
       	var infowindow = new google.maps.InfoWindow({
@@ -94,25 +97,30 @@
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
             if(status == "OK"){
                
-               panArray.push(panorama);
+               
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
-                    $("#image-container").toggle(); 
-                   if ($('#pano1').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano1"), panoramaOptions);      
-                    }
-                    else if ($('#pano2').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
-                    }
-                    else if ($('#pano3').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
-                    }  
-                    else if ($('#pano4').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
-                    }
-                    else{
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
-                    }
+                    $("#image-container").toggle();
+                    var divID = "pano" + divCount;
+                    $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions);  
+                   // if ($('#pano1').children().length == 0){
+                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("'pano'+divCount"), panoramaOptions);      
+                   //  }
+                   //  else if ($('#pano2').children().length == 0){
+                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
+                   //  }
+                   //  else if ($('#pano3').children().length == 0){
+                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
+                   //  }  
+                   //  else if ($('#pano4').children().length == 0){
+                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
+                   //  }
+                   //  else{
+                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
+                   //  }
+                    panArray.push(panorama);
+                    divCount++;
             }
             }
             else{
@@ -158,11 +166,11 @@
 
     <div id="map-canvas" style="height:100%;width:100%;"></div>
     <div id="image-container" style="background-color:#333333;height:25%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4);bottom:-100px; position:absolute;display:none">
-    <div class="box1"id="pano1" ></div>
-    <div class="box2"id="pano2" ></div>
-    <div class="box3"id="pano3" ></div>
-    <div class="box4"id="pano4"></div>
-    <div class="box5"id="pano5"></div>
+    <!-- <div class="box"id="pano1" ></div>
+    <div class="box"id="pano2" ></div>
+    <div class="box"id="pano3" ></div>
+    <div class="box"id="pano4"></div>
+    <div class="box"id="pano5"></div> -->
     <span class="stretch"></span>
     </div>
   </body>
