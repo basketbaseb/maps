@@ -25,6 +25,8 @@
     text-align: justify;
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
+    overflow-x: scroll;
+    white-space: nowrap;
     
     /* just for demo */
     /*min-width: 612px;*/
@@ -97,34 +99,17 @@
               position: google.maps.ControlPosition.TOP_RIGHT
               }
 			     };
-         
            // tests to see if street view panorama exists before displaying image in image-container.
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
             if(status == "OK"){
-               
-               
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
                     $("#image-container").toggle();
                     var divID = "pano" + divCount;
                     $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
+                    // here we actually get the street pano and display it in element with id=divID
                     var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
-                   // if ($('#pano1').children().length == 0){
-                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("'pano'+divCount"), panoramaOptions);      
-                   //  }
-                   //  else if ($('#pano2').children().length == 0){
-                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
-                   //  }
-                   //  else if ($('#pano3').children().length == 0){
-                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
-                   //  }  
-                   //  else if ($('#pano4').children().length == 0){
-                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
-                   //  }
-                   //  else{
-                   //  var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
-                   //  }
                     panArray.push(panorama);
                     divCount++;
             }
@@ -135,8 +120,6 @@
                 content: contentString
                 });
               infowindow.open(map,marker);
-
-
             }
            });
           
