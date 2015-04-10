@@ -83,14 +83,19 @@
 
         // for each marker if you click it, you get the panorama street view image, which appears
         // in the "pano" div at the bottom of the page in the image container. 
-        google.maps.event.addDomListener(marker,'click', function(event){
+        google.maps.event.addDomListener(marker,'click', function(event){   
           var panoramaOptions = {
   			   position: coords,
   			   pov: {
     			   heading: 0,
     			   pitch: 0
   					   },
-           scrollwheel: false
+           scrollwheel: false,
+           linksControl: false,
+           panControl: false,
+           addressControlOptions: {
+              position: google.maps.ControlPosition.TOP_RIGHT
+              }
 			     };
          
            // tests to see if street view panorama exists before displaying image in image-container.
