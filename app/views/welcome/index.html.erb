@@ -18,21 +18,21 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
       var map;
-      var marker;
+      var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
       var markerArray = [];
       var panArray = [];
       var geocoder;
 
       function createInfoWindow(text){
-      	var infowindow = new google.maps.InfoWindow({
+      	var infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
-      	return infowindow;
+      	return infoWindow;
       }
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
-        marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: coords,
           map: map
         });
@@ -55,19 +55,22 @@
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
             if(status == "OK"){
-               var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-               panArray.push(panorama);
-               if( $("#image-container").css('display', 'none')){
-                    $('#image-container').animate({ 'bottom' : '0px' });     
-                    $("#image-container").toggle();          
-            }
+              var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+              panArray.push(panorama);
+              if( $("#image-container").css('display', 'none')){
+                  $('#image-container').animate({ 'bottom' : '0px' });     
+                  $("#image-container").toggle();          
+              }
             }
             else{
               var contentString = "No Street View Available";
-              var infowindow = new google.maps.InfoWindow({
+              if (noStreetViewInfoWindow != null){
+                noStreetViewInfoWindow.close();
+              }
+              noStreetViewInfoWindow = new google.maps.InfoWindow({
                 content: contentString
                 });
-              infowindow.open(map,marker);
+              noStreetViewInfoWindow.open(map,marker);
 
 
             }
