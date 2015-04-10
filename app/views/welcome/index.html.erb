@@ -11,8 +11,9 @@
         padding: 0px
       }
       body{
-        overflow: hidden; /* no scrollbar nonsense */
+        overflow: hidden;  /*no scrollbar nonsense*/ 
       }
+
       /*.pano{
       	display:block;
       	float:right;
@@ -24,24 +25,27 @@
     text-align: justify;
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
+    /*overflow-x: scroll;*/
+    white-space: nowrap;
     
     /* just for demo */
     /*min-width: 612px;*/
 }
 
-.box1, .box2, .box3, .box4, .box5 {
-    width: 19.5%;
+.box {
+    width: 20%;
     height: 100%;
     vertical-align: top;
     display: inline-block;
     *display: inline;
-    zoom: 1
+    zoom: 1;
+
 }
 .stretch {
     width: 100%;
     display: inline-block;
     font-size: 0;
-    line-height: 0
+    line-height: 0;
 }
 
 /*.box1, .box2, .box3, .box5, .box4 {
@@ -59,7 +63,7 @@
       var markerArray = [];
       var panArray = [];
       var geocoder;
-      
+      var divCount = 0;
 
       function createInfoWindow(text){
       	var infoWindow = new google.maps.InfoWindow({
@@ -81,68 +85,70 @@
 
         // for each marker if you click it, you get the panorama street view image, which appears
         // in the "pano" div at the bottom of the page in the image container. 
-        google.maps.event.addDomListener(marker,'click', function(event){
+        google.maps.event.addDomListener(marker,'click', function(event){   
           var panoramaOptions = {
   			   position: coords,
   			   pov: {
     			   heading: 0,
     			   pitch: 0
-  					   }
+  					   },
+           scrollwheel: false,
+           linksControl: false,
+           panControl: false,
+           addressControlOptions: {
+              position: google.maps.ControlPosition.TOP_RIGHT
+              }
 			     };
-
              // check if there is an info window for no street view
             if(noStreetViewInfoWindow != null) {
               // if there is, close it
               noStreetViewInfoWindow.close();
             }
-         
-           // tests to see if street view panorama exists before displaying image in image-container.
+           // tests to see if street view panorama exists before displaying image in image-container. Also checks to see if pano image
+           // is already displayed. 
+
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
-            if(status == "OK"){
-               
-               panArray.push(panorama);
+            // data.location is position of the pano image of the marker clicked
+            if(status == "OK" && notInContainer(data.location)){
+              // jquery to have image-container scroll from bottom on marker click
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
-                    $("#image-container").toggle(); 
-                   if ($('#pano1').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano1"), panoramaOptions);      
-                    }
-                    else if ($('#pano2').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
-                    }
-                    else if ($('#pano3').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
-                    }  
-                    else if ($('#pano4').children().length == 0){
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
-                    }
-                    else{
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
+                    $("#image-container").toggle();
+                    var divID = "pano" + divCount;
+                    // pano containers are added to image-container here
+                    $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
+                    if( $("#image-container").children().length > 6){
+                        $("#image-container").css('overflow-x', 'scroll');
                     }
               }
-            }else{
-              // If no street view available, make an info window at the marker saying that
+                    // here we actually get the street pano and display it in the pano container with id=divID
+                    var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
+                    panArray.push(panorama);
+                    divCount++;
+            }
+            else if(status != "OK"){
               var contentString = "No Street View Available";
-
-              
-              infowindow.open(map,marker);
-
-
-
+              // infowindow.open(map,marker);
               noStreetViewInfoWindow = new google.maps.InfoWindow({
-                content: contentString
+              content: contentString
               });
               noStreetViewInfoWindow.open(map,marker);
 
+
             }
            });
-          
-
-           // on marker click scroll up image-container if image-container is hidden
-           
-            //$("#map-canvas").height("75%"); 
         })
+      }
+
+      // returns true if pano with location: coords is not in the image-container. Returns false if it is already there.
+      function notInContainer(coords){
+        for (i = 0; i < panArray.length; i++) {
+            if(JSON.stringify(panArray[i].position) == JSON.stringify(coords.latLng)){
+              return false;
+            }
+        }
+        return true;
       }
 
       // sets up the map object using mapOptions properties, creates 'home base' marker, and adds listener to the map object
@@ -170,11 +176,11 @@
 
     <div id="map-canvas" style="height:100%;width:100%;"></div>
     <div id="image-container" style="background-color:#333333;height:25%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4);bottom:-100px; position:absolute;display:none">
-    <div class="box1"id="pano1" ></div>
-    <div class="box2"id="pano2" ></div>
-    <div class="box3"id="pano3" ></div>
-    <div class="box4"id="pano4"></div>
-    <div class="box5"id="pano5"></div>
+    <!-- <div class="box"id="pano1" ></div>
+    <div class="box"id="pano2" ></div>
+    <div class="box"id="pano3" ></div>
+    <div class="box"id="pano4"></div>
+    <div class="box"id="pano5"></div> -->
     <span class="stretch"></span>
     </div>
   </body>
