@@ -44,9 +44,9 @@
     line-height: 0
 }
 
-.box1, .box2, .box3, .box5, .box4 {
+/*.box1, .box2, .box3, .box5, .box4 {
     background: #ccc
-}
+}*/
 
 
       
@@ -66,6 +66,7 @@
       	})
       	return infowindow;
       }
+
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
@@ -97,7 +98,21 @@
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
                     $("#image-container").toggle(); 
-                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano1"), panoramaOptions);         
+                   if ($('#pano1').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano1"), panoramaOptions);      
+                    }
+                    else if ($('#pano2').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
+                    }
+                    else if ($('#pano3').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
+                    }  
+                    else if ($('#pano4').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
+                    }
+                    else{
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
+                    }
             }
             }
             else{
