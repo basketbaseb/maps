@@ -22,6 +22,7 @@
       var markerArray = [];
       var panArray = [];
       var geocoder;
+      
 
       function createInfoWindow(text){
       	var infowindow = new google.maps.InfoWindow({
@@ -64,9 +65,7 @@
             }
             else{
               var contentString = "No Street View Available";
-              var infowindow = new google.maps.InfoWindow({
-                content: contentString
-                });
+              
               infowindow.open(map,marker);
 
 
