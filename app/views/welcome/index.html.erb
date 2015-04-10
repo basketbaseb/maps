@@ -13,27 +13,65 @@
       body{
         overflow: hidden; /* no scrollbar nonsense */
       }
+      /*.pano{
+      	display:block;
+      	float:right;
+      }*/
+      #image-container {
+ /*   border: 2px dashed #444;
+    height: 125px;*/
+    
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+    
+    /* just for demo */
+    /*min-width: 612px;*/
+}
+
+.box1, .box2, .box3, .box4, .box5 {
+    width: 19.5%;
+    height: 100%;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1
+}
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+/*.box1, .box2, .box3, .box5, .box4 {
+    background: #ccc
+}*/
+
+
+      
       
     </style>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
       var map;
-      var marker;
+      var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
       var markerArray = [];
       var panArray = [];
       var geocoder;
       
 
       function createInfoWindow(text){
-      	var infowindow = new google.maps.InfoWindow({
+      	var infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
-      	return infowindow;
+      	return infoWindow;
       }
+
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
-        marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: coords,
           map: map
         });
@@ -48,26 +86,54 @@
   			   position: coords,
   			   pov: {
     			   heading: 0,
-    			   pitch: -25
+    			   pitch: 0
   					   }
 			     };
+
+             // check if there is an info window for no street view
+            if(noStreetViewInfoWindow != null) {
+              // if there is, close it
+              noStreetViewInfoWindow.close();
+            }
          
            // tests to see if street view panorama exists before displaying image in image-container.
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
             if(status == "OK"){
-               var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+               
                panArray.push(panorama);
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
-                    $("#image-container").toggle();          
-            }
-            }
-            else{
+                    $("#image-container").toggle(); 
+                   if ($('#pano1').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano1"), panoramaOptions);      
+                    }
+                    else if ($('#pano2').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano2"), panoramaOptions);  	
+                    }
+                    else if ($('#pano3').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano3"), panoramaOptions);  	
+                    }  
+                    else if ($('#pano4').children().length == 0){
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano4"), panoramaOptions);  	
+                    }
+                    else{
+                    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano5"), panoramaOptions);  	
+                    }
+              }
+            }else{
+              // If no street view available, make an info window at the marker saying that
               var contentString = "No Street View Available";
+
               
               infowindow.open(map,marker);
 
+
+
+              noStreetViewInfoWindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+              noStreetViewInfoWindow.open(map,marker);
 
             }
            });
@@ -104,7 +170,12 @@
 
     <div id="map-canvas" style="height:100%;width:100%;"></div>
     <div id="image-container" style="background-color:#333333;height:25%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4);bottom:-100px; position:absolute;display:none">
-    <div id="pano" style="height:100%;width:20%"></div>
+    <div class="box1"id="pano1" ></div>
+    <div class="box2"id="pano2" ></div>
+    <div class="box3"id="pano3" ></div>
+    <div class="box4"id="pano4"></div>
+    <div class="box5"id="pano5"></div>
+    <span class="stretch"></span>
     </div>
   </body>
 </html>
