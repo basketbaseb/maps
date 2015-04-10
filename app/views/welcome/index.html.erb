@@ -80,7 +80,14 @@
            // on marker click scroll up image-container if image-container is hidden
            
             //$("#map-canvas").height("75%"); 
-        })
+        });
+        
+        // Add right-click event to the marker
+        google.maps.event.addDomListener(marker, 'rightclick', function(event) {
+          // set the marker's map to null will remove it from the map
+          // maker still exists in our array though
+          marker.setMap(null);
+        });
       }
 
       // sets up the map object using mapOptions properties, creates 'home base' marker, and adds listener to the map object
@@ -97,6 +104,13 @@
 
         google.maps.event.addDomListener(map, 'click', function(event){
             createMarker(event.latLng, map);
+        });
+
+        // Remove default right-click menu for our entire window
+        // will be replaced by our own
+        google.maps.event.addDomListener(window, "contextmenu", function(e) {
+          e.preventDefault();
+          e.stopPropogation();
         });
       }
 
