@@ -25,7 +25,7 @@
     text-align: justify;
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
-    overflow-x: scroll;
+    /*overflow-x: scroll;*/
     white-space: nowrap;
     
     /* just for demo */
@@ -103,12 +103,17 @@
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
             if(status == "OK"){
+              // jquery to have image-container scroll from bottom on marker click
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
                     $("#image-container").toggle();
                     var divID = "pano" + divCount;
+                    // pano containers are added to image-container here
                     $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
-                    // here we actually get the street pano and display it in element with id=divID
+                    if( $("#image-container").children().length > 6){
+                        $("#image-container").css('overflow-x', 'scroll');
+                    }
+                    // here we actually get the street pano and display it in the pano container with id=divID
                     var panorama = new  google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
                     panArray.push(panorama);
                     divCount++;
