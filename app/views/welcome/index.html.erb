@@ -54,6 +54,13 @@
            // tests to see if street view panorama exists before displaying image in image-container.
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
+
+            // check if there is an info window for no street view
+            if(noStreetViewInfoWindow != null) {
+              // if there is, close it
+              noStreetViewInfoWindow.close();
+            }
+
             if(status == "OK"){
               var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
               panArray.push(panorama);
@@ -64,12 +71,14 @@
             }
             else{
               var contentString = "No Street View Available";
+              // check if an info window exists already
               if (noStreetViewInfoWindow != null){
+                // if it does, close it
                 noStreetViewInfoWindow.close();
               }
               noStreetViewInfoWindow = new google.maps.InfoWindow({
                 content: contentString
-                });
+              });
               noStreetViewInfoWindow.open(map,marker);
 
 
