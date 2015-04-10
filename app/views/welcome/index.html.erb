@@ -99,10 +99,12 @@
               position: google.maps.ControlPosition.TOP_RIGHT
               }
 			     };
-           // tests to see if street view panorama exists before displaying image in image-container.
+           // tests to see if street view panorama exists before displaying image in image-container. Also checks to see if pano image
+           // is already displayed. 
            var svTest = new google.maps.StreetViewService();
            svTest.getPanoramaByLocation(coords, 50, function(data,status){
-            if(status == "OK"){
+            // data.location is position of the pano image of the marker clicked
+            if(status == "OK" && notInContainer(data.location)){
               // jquery to have image-container scroll from bottom on marker click
                if( $("#image-container").css('display', 'none')){
                     $('#image-container').animate({ 'bottom' : '0px' });     
@@ -119,7 +121,7 @@
                     divCount++;
             }
             }
-            else{
+            else if(status != "OK"){
               var contentString = "No Street View Available";
               var infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -127,12 +129,17 @@
               infowindow.open(map,marker);
             }
            });
-          
-
-           // on marker click scroll up image-container if image-container is hidden
-           
-            //$("#map-canvas").height("75%"); 
         })
+      }
+
+      // returns true if pano with location: coords is not in the image-container. Returns false if it is already there.
+      function notInContainer(coords){
+        for (i = 0; i < panArray.length; i++) {
+            if(JSON.stringify(panArray[i].position) == JSON.stringify(coords.latLng)){
+              return false;
+            }
+        }
+        return true;
       }
 
       // sets up the map object using mapOptions properties, creates 'home base' marker, and adds listener to the map object
