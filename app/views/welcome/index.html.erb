@@ -38,7 +38,7 @@
         });
         markerArray.push(marker);
         map.panTo(marker.position);
-        var info = createInfoWindow(marker.title);
+        //var info = createInfoWindow(marker.title);
 
         // for each marker if you click it, you get the panorama street view image, which appears
         // in the "pano" div at the bottom of the page in the image container. 
@@ -62,7 +62,15 @@
                     $("#image-container").toggle();          
             }
             }
-            else{}
+            else{
+              var contentString = "No Street View Available";
+              var infowindow = new google.maps.InfoWindow({
+                content: contentString
+                });
+              infowindow.open(map,marker);
+
+
+            }
            });
           
 
