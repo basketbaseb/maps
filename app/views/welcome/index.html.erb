@@ -109,6 +109,7 @@
                     panArray.push(panorama);
                     divCount++;
 
+                    //hovering over pano image in image-container animates its associated marker on the map
                     $(document.getElementById(divID)).hover(function(){ 
                     if (marker.getAnimation() != null) {
                     marker.setAnimation(null);
