@@ -109,9 +109,14 @@
                     panArray.push(panorama);
                     divCount++;
 
-                    google.maps.event.addDomListener(document.getElementById(divID), 'mouseover', function(){
-                    alert("you moused over a pano image");
+                    $(document.getElementById(divID)).hover(function(){ 
+                    if (marker.getAnimation() != null) {
+                    marker.setAnimation(null);
+                    } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    }
                     });
+
             }
             // opens info window on marker if no street view is available
             else if(status != "OK"){
@@ -124,7 +129,7 @@
             }
            });
         })
-      }
+      }  
 
       // returns true if pano with location: coords is not in the image-container. Returns false if it is already there.
       function notInContainer(coords){
