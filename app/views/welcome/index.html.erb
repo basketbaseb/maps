@@ -98,10 +98,10 @@
 			     };
            
              // check if there is an info window for no street view
-            if(noStreetViewInfoWindow != null) {
-              // if there is, close it
-              noStreetViewInfoWindow.close();
-            }
+            // if(noStreetViewInfoWindow != null) {
+            //   // if there is, close it
+            //   noStreetViewInfoWindow.close();
+            // }
             if(infoWindow != null){
               infoWindow.close();
             }
@@ -136,6 +136,7 @@
                     } 
                     else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
+                    map.panTo(marker.position);
                     }
                     }); //end of hover
 
