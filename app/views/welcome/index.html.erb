@@ -168,10 +168,38 @@
         return true;
       }
 
+      function notInMarkerArray(coords){
+        for (i = 0; i < markerArray.length; i++) {
+            if(JSON.stringify(markerArray[i].position) == JSON.stringify(coords.latLng)){
+              return false;
+            }
+        }
+        return true;
+      }
+
+      function codeAddress() {
+      var address = document.getElementById('address').value;
+      geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var geocodeLatLng = {k: results[0].geometry.location.k,
+                             D: results[0].geometry.location.D};
+        var geocodeObject = {latLng: geocodeLatLng };              
+        if(notInMarkerArray(geocodeObject)){
+          map.setCenter(results[0].geometry.location);
+          createMarker(results[0].geometry.location, map);
+        }
+      } 
+      else {
+      alert('Geocode was not successful for the following reason: ' + status);
+          }
+        }); // end of geocode()
+      } // end of function
+
       // sets up the map object using mapOptions properties, creates 'home base' marker, and adds listener to the map object
       // so that on click you create a new marker.
       function initialize() {
         detectBrowser();
+        geocoder = new google.maps.Geocoder();
         var mapOptions = {
           zoom: 10,
           center: new google.maps.LatLng(37.736414, -122.247953)
@@ -190,11 +218,16 @@
   </head>
 
   <body>
+    <div id="panel">
+      <input id="address" type="textbox">
+      <input type="button" value="Geocode" onclick="codeAddress()">
+    </div>
     
     <div id="map-canvas"></div>
     <div id="image-container">
     <span class="stretch"></span>
     </div>
+    
 
     <!-- <div class="menu"><ul><li>Button1</li><li>Button2</li><li>Button3</li></ul></div> -->
   </body>
