@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-      html, body, #map-canvas {
+      html, body {
         height: 100%;
         margin: 0px;
         padding: 0px
@@ -14,11 +14,24 @@
         overflow: hidden;  /*no scrollbar nonsense*/ 
       }
 
+    #map-canvas{
+    height:100%;
+    width:100%;
+    }  
+
     #image-container {    
     text-align: justify;
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
     white-space: nowrap;
+
+    background-color:#333333;
+    height:25%;
+    width:100%;
+    box-shadow: 0px -3px 6px rgba(0,0,0,0.4);
+    bottom:-100px; 
+    position:absolute;
+    display:none;
 }
 
     .box {
@@ -82,6 +95,7 @@
               position: google.maps.ControlPosition.TOP_RIGHT
               }
 			     };
+           
              // check if there is an info window for no street view
             if(noStreetViewInfoWindow != null) {
               // if there is, close it
@@ -103,7 +117,7 @@
                     if( $("#image-container").children().length > 6){
                         $("#image-container").css('overflow-x', 'scroll');
                     }
-              }
+              } //end of .css if statement
                     // here we actually get the street pano and display it in the pano container with id=divID
                     var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
                     panArray.push(panorama);
@@ -113,12 +127,13 @@
                     $(document.getElementById(divID)).hover(function(){ 
                     if (marker.getAnimation() != null) {
                     marker.setAnimation(null);
-                    } else {
+                    } 
+                    else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
-                    });
+                    }); //end of hover
 
-            }
+            } //end of status == "OK" if statement
             // opens info window on marker if no street view is available
             else if(status != "OK"){
               var contentString = "No Street View Available";
@@ -127,10 +142,10 @@
               content: contentString
               });
               noStreetViewInfoWindow.open(map,marker);
-            }
-           });
-        })
-      }  
+            }  //end of else if
+           }); // end of getPanoramaByLocation
+        }); // end of on marker click
+      }  // end of function
 
       // returns true if pano with location: coords is not in the image-container. Returns false if it is already there.
       function notInContainer(coords){
@@ -164,10 +179,13 @@
   </head>
 
   <body>
-    <div id="map-canvas" style="height:100%;width:100%;"></div>
-    <div id="image-container" style="background-color:#333333;height:25%;width:100%;box-shadow: 0px -3px 6px rgba(0,0,0,0.4);bottom:-100px; position:absolute;display:none">
+    
+    <div id="map-canvas"></div>
+    <div id="image-container">
     <span class="stretch"></span>
     </div>
+
+    <!-- <div class="menu"><ul><li>Button1</li><li>Button2</li><li>Button3</li></ul></div> -->
   </body>
 </html>
 
