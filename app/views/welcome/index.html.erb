@@ -55,18 +55,19 @@
     <script>
       var map;
       var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
+      var infoWindow;
       var markerArray = [];
       var panArray = [];
       var geocoder;
       var divCount = 0;
+      var menuContent = '<p>Top 5 restaurants near me: ' + '<button>+</button>' + '</p>';
 
-      function createInfoWindow(text){
-      	var infoWindow = new google.maps.InfoWindow({
+      function createInfoWindow(text, map, marker){
+      	infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
-      	return infoWindow;
+      	infoWindow.open(map,marker);
       }
-
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
@@ -97,9 +98,12 @@
 			     };
            
              // check if there is an info window for no street view
-            if(noStreetViewInfoWindow != null) {
-              // if there is, close it
-              noStreetViewInfoWindow.close();
+            // if(noStreetViewInfoWindow != null) {
+            //   // if there is, close it
+            //   noStreetViewInfoWindow.close();
+            // }
+            if(infoWindow != null){
+              infoWindow.close();
             }
            // tests to see if street view panorama exists before displaying image in image-container. Also checks to see if pano image
            // is already displayed. 
@@ -118,6 +122,8 @@
                         $("#image-container").css('overflow-x', 'scroll');
                     }
               } //end of .css if statement
+             
+              
                     // here we actually get the street pano and display it in the pano container with id=divID
                     var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
                     panArray.push(panorama);
@@ -130,20 +136,25 @@
                     } 
                     else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
+                    map.panTo(marker.position);
                     }
                     }); //end of hover
 
+            
             } //end of status == "OK" if statement
             // opens info window on marker if no street view is available
-            else if(status != "OK"){
-              var contentString = "No Street View Available";
-              // infowindow.open(map,marker);
-              noStreetViewInfoWindow = new google.maps.InfoWindow({
-              content: contentString
-              });
-              noStreetViewInfoWindow.open(map,marker);
-            }  //end of else if
+            // taking out to include left click menu. If no street view avaiable, it just won't display for now. 
+            // else if(status != "OK"){
+            //   var contentString = "No Street View Available";
+            //   // infowindow.open(map,marker);
+            //   noStreetViewInfoWindow = new google.maps.InfoWindow({
+            //   content: contentString
+            //   });
+            //   noStreetViewInfoWindow.open(map,marker);
+            // }  //end of else if
            }); // end of getPanoramaByLocation
+        // right now info window is created on any marker click
+        createInfoWindow(menuContent, map, marker);
         }); // end of on marker click
       }  // end of function
 
