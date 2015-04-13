@@ -17,7 +17,43 @@
     #map-canvas{
     height:100%;
     width:100%;
+    }
+
+    #panel{
+      position: absolute;
+      left: 2%;
+      top:2%;
+      z-index: 1;
+    }
+
+    #address{
+    float:left; 
+    width:300px; 
+    height:27px; 
+    line-height:27px;
+    text-indent:10px; 
+    font-family:arial, sans-serif; 
+    font-size:1em; 
+    color:#333; 
+    background: #fff; 
+    border:solid 1px #d9d9d9; 
+    border-top:solid 1px #c0c0c0; 
+    border-right:none;
     }  
+
+    #search{
+      cursor:pointer; 
+    width:70px; 
+    height: 31px; 
+    line-height:0; 
+    font-size:0; 
+    text-indent:-999px;
+    color: transparent;  
+    background: url(/assets/images/search.png) no-repeat #4d90fe center; 
+    border: 1px solid #3079ED; 
+    -moz-border-radius: 2px; 
+    -webkit-border-radius: 2px; 
+    }
 
     #image-container {    
     text-align: justify;
@@ -202,7 +238,10 @@
         geocoder = new google.maps.Geocoder();
         var mapOptions = {
           zoom: 10,
-          center: new google.maps.LatLng(37.736414, -122.247953)
+          center: new google.maps.LatLng(37.736414, -122.247953),
+          disableDefaultUI: true,
+          zoomControl: true,
+          zoomControlOptions: {style: google.maps.ZoomControlStyle.DEFAULT,position: google.maps.ControlPosition.RIGHT_CENTER}
         };
         map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
@@ -220,7 +259,7 @@
   <body>
     <div id="panel">
       <input id="address" type="textbox">
-      <input type="button" value="Geocode" onclick="codeAddress()">
+      <input id="search" type="button" value="Geocode" onclick="codeAddress()">
     </div>
     
     <div id="map-canvas"></div>
