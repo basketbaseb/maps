@@ -16,19 +16,21 @@
       
     </style>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <%= javascript_include_tag "application" %>
     <script>
       var map;
       var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
       var markerArray = [];
       var panArray = [];
       var geocoder;
+      
 
       function createInfoWindow(text){
       	var infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
       	return infoWindow;
-      }
+      }      
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
       function createMarker(coords, map) {
@@ -81,12 +83,16 @@
            
             //$("#map-canvas").height("75%"); 
         });
+
+        var deleteMenu = new DeleteMenu();
         
         // Add right-click event to the marker
         google.maps.event.addDomListener(marker, 'rightclick', function(event) {
           // set the marker's map to null will remove it from the map
           // maker still exists in our array though
-          marker.setMap(null);
+          //marker.setMap(null);
+          //showContextMenu(event.latLng);
+          deleteMenu.open(map, marker);
         });
       }
 
@@ -110,11 +116,15 @@
         // will be replaced by our own
         google.maps.event.addDomListener(window, "contextmenu", function(e) {
           e.preventDefault();
-          e.stopPropogation();
         });
+
+
       }
 
+
       google.maps.event.addDomListener(window, 'load', initialize);
+
+      
 
     </script>
   </head>
