@@ -55,15 +55,24 @@
     font-size:0; 
     text-indent:-999px;
     color: transparent;  
-    background: url(/assets/images/search.png) no-repeat #4d90fe center; 
+    background: url(<%= asset_path 'search.png' %>) no-repeat #4d90fe center; 
     border: 1px solid #3079ED; 
     -moz-border-radius: 2px; 
     -webkit-border-radius: 2px; 
+    background-size: 15px 15px;
     }
     #search:hover {
-    background: url(ico-search.png) no-repeat center #357AE8; 
     border: 1px solid #2F5BB7;
-}
+	}
+
+	#yelpButton{
+	min-width: 22px;
+	min-height: 22px;
+	background: url(<%= asset_path 'yelp.png' %>) no-repeat #4d90fe center; 
+	/*background-size: 30px 30px;*/
+	border: 0px;
+	text-align: middle;
+	}
 
     #image-container {    
     text-align: justify;
@@ -107,7 +116,7 @@
       var panArray = [];
       var geocoder;
       var divCount = 0;
-      var menuContent = '<p>Top 5 restaurants near me: ' + '<button>+</button>' + '</p>';
+      var menuContent = '<p id="yelp_text">Top 5 restaurants near me: ' + '<button id="yelpButton">' + '</button>' + '</p>';
 
       function createInfoWindow(text, map, marker){
       	infoWindow = new google.maps.InfoWindow({
@@ -280,10 +289,7 @@
         google.maps.event.addDomListener(window, "contextmenu", function(e) {
           e.preventDefault();
         });
-
         $("#address").focus();
-
-
       }
 
 
