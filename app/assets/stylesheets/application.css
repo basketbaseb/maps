@@ -27,7 +27,7 @@ padding-left: 5px
 }
 
 
-.delete-menu {
+#context-menu {
   position: absolute;
   background: white;
   padding: 3px;
@@ -41,6 +41,6 @@ padding-left: 5px
   margin-left: 10px;
   cursor: pointer;
 }
-.delete-menu:hover {
+#context-menu:hover {
   background: #eee;
 }
