@@ -32,7 +32,7 @@
     height:27px; 
     line-height:27px;
     text-indent:10px; 
-    font-family:arial, sans-serif; 
+    font-family:Helvetica, sans-serif; 
     font-size:1em; 
     color:#333; 
     background: #fff; 
@@ -105,8 +105,7 @@
     line-height: 0;
 }      
     </style>
-
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
     <%= javascript_include_tag "application" %>
     <script>
       var map;
@@ -290,6 +289,10 @@
           e.preventDefault();
         });
         $("#address").focus();
+
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+  		autocomplete.bindTo('bounds', map);
       }
 
 
@@ -300,7 +303,7 @@
 
   <body>
     <div id="panel">
-      <input id="address" type="textbox">
+      <input id="address" type="textbox" placeholder="Enter a location">
       <input id="search" type="button" value="Geocode" onclick="codeAddress()">
     </div>
     
