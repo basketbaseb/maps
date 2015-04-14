@@ -29,12 +29,12 @@ function detectBrowser() {
 
 
 /**
- * A menu that lets a user delete a selected marker
+ * Context menu when right-clicking a marker
  * @constructor
  */
-function DeleteMenu() {
+function ContextMenu() {
   this.div_ = document.createElement('div');
-  this.div_.id = 'delete-menu';
+  this.div_.id = 'context-menu';
   this.div_.innerHTML = 'Delete';
 
   var menu = this;
@@ -43,23 +43,23 @@ function DeleteMenu() {
   });
 }
 
-DeleteMenu.prototype = new google.maps.OverlayView();
+ContextMenu.prototype = new google.maps.OverlayView();
 
-DeleteMenu.prototype.onAdd = function() {
-  deleteMenu = this;
+ContextMenu.prototype.onAdd = function() {
+  var contextMenu = this;
   var map = this.getMap();
   this.getPanes().floatPane.appendChild(this.div_);
 
   // mousedown anywhere on the map except on the menu div will close the
   // menu.
   this.divListener_ = google.maps.event.addDomListener(map.getDiv(), 'mousedown', function(e) {
-    if (e.target != deleteMenu.div_) {
-      deleteMenu.close();
+    if (e.target != contextMenu.div_) {
+      contextMenu.close();
     }
   }, true);
 };
 
-DeleteMenu.prototype.onRemove = function() {
+ContextMenu.prototype.onRemove = function() {
   google.maps.event.removeListener(this.divListener_);
   this.div_.parentNode.removeChild(this.div_);
 
@@ -68,11 +68,11 @@ DeleteMenu.prototype.onRemove = function() {
   this.set('marker');
 };
 
-DeleteMenu.prototype.close = function() {
+ContextMenu.prototype.close = function() {
   this.setMap(null);
 };
 
-DeleteMenu.prototype.draw = function() {
+ContextMenu.prototype.draw = function() {
   var position = this.get('position');
   var projection = this.getProjection();
 
@@ -88,7 +88,7 @@ DeleteMenu.prototype.draw = function() {
 /**
  * Opens the menu at a Marker
  */
-DeleteMenu.prototype.open = function(map, marker) {
+ContextMenu.prototype.open = function(map, marker) {
   this.set('position', marker.position);
   this.set('marker', marker);
   this.setMap(map);
@@ -99,7 +99,7 @@ DeleteMenu.prototype.open = function(map, marker) {
 /**
  * Deletes the marker
  */
-DeleteMenu.prototype.removeMarker = function() {
+ContextMenu.prototype.removeMarker = function() {
   var marker = this.get('marker');
   marker.setMap(null);
   this.close();
