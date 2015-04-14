@@ -98,6 +98,7 @@
       var geocoder;
       var divCount = 0;
       var menuContent = '<p>Top 5 restaurants near me: ' + '<button>+</button>' + '</p>';
+      var addMarkerListener;
 
       function createInfoWindow(text, map, marker){
       	infoWindow = new google.maps.InfoWindow({
@@ -203,6 +204,7 @@
         google.maps.event.addDomListener(marker, 'rightclick', function(event) {
           // opens the delete menu sending it this marker
           // the marker is kept in the array though
+
           deleteMenu.open(map, marker);
         }); // end of rightclick marker
 
@@ -261,8 +263,16 @@
             mapOptions);
         createMarker({lat: 37.736414, lng: -122.247953}, map);
 
-        google.maps.event.addDomListener(map, 'click', function(event){
+        addMarkerListener = google.maps.event.addDomListener(map, 'click', function(event){
+          if(canCreateMarker) {
             createMarker(event.latLng, map);
+          } else {
+            // BIG ASSUMPTION
+            // if we can't create a marker, this acting of clicking should mean we now can
+            // this workaround is needed because all other checks, such as if there is a delete-menu
+            // or when closing the menu, happen before this click event
+            canCreateMarker = true;
+          }
         });
 
         // Remove default right-click menu for our entire window

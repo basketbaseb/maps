@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require_tree .
 
+var canCreateMarker = true;
 
 function detectBrowser() {
   var useragent = navigator.userAgent;
@@ -33,7 +34,7 @@ function detectBrowser() {
  */
 function DeleteMenu() {
   this.div_ = document.createElement('div');
-  this.div_.className = 'delete-menu';
+  this.div_.id = 'delete-menu';
   this.div_.innerHTML = 'Delete';
 
   var menu = this;
@@ -92,6 +93,7 @@ DeleteMenu.prototype.open = function(map, marker) {
   this.set('marker', marker);
   this.setMap(map);
   this.draw();
+  canCreateMarker = false;
 };
 
 /**
@@ -102,4 +104,3 @@ DeleteMenu.prototype.removeMarker = function() {
   marker.setMap(null);
   this.close();
 };
-
