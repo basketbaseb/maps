@@ -115,7 +115,7 @@
       var panArray = [];
       var geocoder;
       var divCount = 0;
-      var menuContent = '<p id="yelp_text">Top 5 restaurants near me: ' + '<button id="yelpButton">' + '</button>' + '</p>';
+      var menuContent = '<p id="yelp_text">Top 5 restaurants near me: ' + '<button id="yelpButton" onclick="searchYelp(map)">' + '</button>' + '</p>';
 
       function createInfoWindow(text, map, marker){
       	infoWindow = new google.maps.InfoWindow({
@@ -311,6 +311,7 @@
 
 
       google.maps.event.addDomListener(window, 'load', initialize);
+
 
     </script>
   </head>
