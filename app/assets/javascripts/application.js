@@ -110,12 +110,11 @@ var searchTerm = $('#address').val();
 // post to the search with the search term, take the response data
 // and process it
 $.post('/search', { term: searchTerm }, function(data) {
-// do some clean up
-alert(data);
 // iterate through each business in the response capture the data
 // within a closure.
 data['businesses'].forEach(function(business, index) {
-capture(index, map, business);
+console.log(business.name);
+//capture(index, map, business);
 });
 });
 }
