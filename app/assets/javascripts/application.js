@@ -19,7 +19,7 @@ var canCreateMarker = true;
 
 function detectBrowser() {
   var useragent = navigator.userAgent;
-  var mapdiv = document.getElementById("pano");
+  var mapdiv = document.getElementById("pano0");
 
   if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
     mapdiv.style.width = '100%';
@@ -102,5 +102,11 @@ ContextMenu.prototype.open = function(map, marker) {
 ContextMenu.prototype.removeMarker = function() {
   var marker = this.get('marker');
   marker.setMap(null);
+  if(marker.pano) {
+    elem = document.getElementById(marker.pano.myDiv);
+    elem.remove();
+    panArray.splice(panArray.indexOf(marker.pano), 1);
+  }
+  markerArray.splice(markerArray.indexOf(marker));
   this.close();
 };
