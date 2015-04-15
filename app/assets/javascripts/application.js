@@ -112,9 +112,10 @@ searchYelp(map,markerPosition);
 function searchYelp(map, markerLatLng){
 //var searchTerm = $('#address').val();
 var searchTerm = "food";
+var coordinates = {latitude: markerLatLng.D.toFixed(5), longitude: markerLatLng.k.toFixed(5)};
 // post to the search with the search term, take the response data
 // and process it
-$.post('/search', { term: searchTerm }, function(data) {
+$.post('/search', { term: searchTerm, coordinates: coordinates }, function(data) {
 // iterate through each business in the response capture the data
 // within a closure.
 data['businesses'].forEach(function(business, index) {
