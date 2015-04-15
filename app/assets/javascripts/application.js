@@ -112,7 +112,7 @@ searchYelp(map,markerPosition);
 function searchYelp(map, markerLatLng){
 //var searchTerm = $('#address').val();
 var searchTerm = "food";
-var coordinates = {latitude: markerLatLng.D.toFixed(5), longitude: markerLatLng.k.toFixed(5)};
+var coordinates = {latitude: markerLatLng.k, longitude: markerLatLng.D};
 // post to the search with the search term, take the response data
 // and process it
 $.post('/search', { term: searchTerm, coordinates: coordinates }, function(data) {
