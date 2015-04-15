@@ -20,7 +20,7 @@ var yelpArray = [];
 
 function detectBrowser() {
   var useragent = navigator.userAgent;
-  var mapdiv = document.getElementById("pano");
+  var mapdiv = document.getElementById("pano0");
 
   if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
     mapdiv.style.width = '100%';
@@ -102,7 +102,29 @@ ContextMenu.prototype.open = function(map, marker) {
  */
 ContextMenu.prototype.removeMarker = function() {
   var marker = this.get('marker');
+  // set map of marker to null removes it from the map
   marker.setMap(null);
+  // if there is a pano for this marker
+  if(marker.pano) {
+    // get the div element and remove it
+    elem = document.getElementById(marker.pano.myDiv);
+    elem.remove();
+    // remove the pano from the array
+    panArray.splice(panArray.indexOf(marker.pano), 1);
+
+    // if that is the last pano, hide the image-container
+    // less than or equal to 1 to take stretch element into account
+    if($("#image-container").children().length <= 1) {
+      // animate it back off screen
+      // for some reason this doesn't work
+      $("#image-container").animate({ "bottom" : "-100px" });
+      $("#image-container").toggle();
+    }
+  }
+  // remove the marker from the array
+  markerArray.splice(markerArray.indexOf(marker));
+
+  // close the context menu
   this.close();
 };
 
