@@ -101,12 +101,21 @@ ContextMenu.prototype.open = function(map, marker) {
  */
 ContextMenu.prototype.removeMarker = function() {
   var marker = this.get('marker');
+  // set map of marker to null removes it from the map
   marker.setMap(null);
+  // if there is a pano for this marker
   if(marker.pano) {
+    // get the div element and remove it
     elem = document.getElementById(marker.pano.myDiv);
     elem.remove();
+    // remove the pano from the array
     panArray.splice(panArray.indexOf(marker.pano), 1);
+
+    
   }
+  // remove the marker from the array
   markerArray.splice(markerArray.indexOf(marker));
+
+  // close the context menu
   this.close();
 };
