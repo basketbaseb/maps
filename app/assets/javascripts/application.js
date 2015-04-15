@@ -111,7 +111,14 @@ ContextMenu.prototype.removeMarker = function() {
     // remove the pano from the array
     panArray.splice(panArray.indexOf(marker.pano), 1);
 
-    
+    // if that is the last pano, hide the image-container
+    // less than or equal to 1 to take stretch element into account
+    if($("#image-container").children().length <= 1) {
+      // animate it back off screen
+      // for some reason this doesn't work
+      $("#image-container").animate({ "bottom" : "-100px" });
+      $("#image-container").toggle();
+    }
   }
   // remove the marker from the array
   markerArray.splice(markerArray.indexOf(marker));
