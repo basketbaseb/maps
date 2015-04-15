@@ -110,22 +110,24 @@ searchYelp(map,markerPosition);
 }
 
 function searchYelp(map, markerLatLng){
-//var searchTerm = $('#address').val();
 var searchTerm = "food";
 var coordinates = {latitude: markerLatLng.k, longitude: markerLatLng.D};
 // post to the search with the search term, take the response data
 // and process it
 $.post('/search', { term: searchTerm, coordinates: coordinates }, function(data) {
 // iterate through each business in the response capture the data
-// within a closure.
 data['businesses'].forEach(function(business, index) {
 console.log(business.name + ":" + business.location.coordinate.latitude, business.location.coordinate.longitude);
-createYelpMarker(business);
-//capture(index, map, business);
+createYelpMarker(map, business);
 });
 });
 }
 
-function createYelpMarker(business){
-  
+function createYelpMarker(map, business){
+  var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
+  var marker = new google.maps.Marker({
+          position: coords,
+          animation: google.maps.Animation.DROP,
+          map: map
+        });
 }
