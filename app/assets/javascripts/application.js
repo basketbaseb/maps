@@ -119,8 +119,13 @@ $.post('/search', { term: searchTerm, coordinates: coordinates }, function(data)
 // iterate through each business in the response capture the data
 // within a closure.
 data['businesses'].forEach(function(business, index) {
-console.log(business.name);
+console.log(business.name + ":" + business.location.coordinate.latitude, business.location.coordinate.longitude);
+createYelpMarker(business);
 //capture(index, map, business);
 });
 });
+}
+
+function createYelpMarker(business){
+  
 }
