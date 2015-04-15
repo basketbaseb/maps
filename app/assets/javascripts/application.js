@@ -105,8 +105,13 @@ ContextMenu.prototype.removeMarker = function() {
   this.close();
 };
 
-function searchYelp(map){
-var searchTerm = $('#address').val();
+function sendMarkerToYelp(map){
+searchYelp(map,markerPosition);
+}
+
+function searchYelp(map, markerLatLng){
+//var searchTerm = $('#address').val();
+var searchTerm = "food";
 // post to the search with the search term, take the response data
 // and process it
 $.post('/search', { term: searchTerm }, function(data) {

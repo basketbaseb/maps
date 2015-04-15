@@ -108,20 +108,21 @@
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
     <%= javascript_include_tag "application" %>
     <script>
-      var map;
+      var map, markerPosition;
       var noStreetViewInfoWindow; // InfoWindow message telling us the marker has no Street View
       var infoWindow;
       var markerArray = [];
       var panArray = [];
       var geocoder;
       var divCount = 0;
-      var menuContent = '<p id="yelp_text">Top 5 restaurants near me: ' + '<button id="yelpButton" onclick="searchYelp(map)">' + '</button>' + '</p>';
+      var menuContent = '<p id="yelp_text">Top 5 restaurants near me: ' + '<button id="yelpButton" onclick="sendMarkerToYelp(map)">' + '</button>' + '</p>';
 
       function createInfoWindow(text, map, marker){
       	infoWindow = new google.maps.InfoWindow({
       		content: text
       	})
       	infoWindow.open(map,marker);
+        markerPosition = marker.position;
       }
 
       // creates new marker given lat/long of wherever you click, then pans to that new marker. 
@@ -216,12 +217,10 @@
 
         // ******* Right Click Marker **********************************************
         var contextMenu = new ContextMenu();
-        
         // Add right-click event to the marker
         google.maps.event.addDomListener(marker, 'rightclick', function(event) {
           // opens the delete menu sending it this marker
           // the marker is kept in the array though
-
           contextMenu.open(map, marker);
         }); // end of rightclick marker
 
