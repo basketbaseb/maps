@@ -139,11 +139,20 @@ function createYelpMarker(map, business){
   var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
   var image = {url: '<%= asset_path 'yelp-marker.png' %>',
                size: new google.maps.Size(32, 32)};
-  var marker = new google.maps.Marker({
+  var yelpMarker = new google.maps.Marker({
           position: coords,
           animation: google.maps.Animation.DROP,
           map: map,
           icon: image
         });
-  yelpArray.push(marker);
+  yelpArray.push(yelpMarker);
+
+  var infowindowcontent = '<strong>'+business.name+'</strong><br>';
+  infowindowcontent += '<img src="'+business.image_url+'"><br>';
+  infowindowcontent += '<a href="'+business.url+'" target="_blank">see it on yelp</a>';
+  var infowindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(yelpMarker, 'click', function() {
+        infowindow.setContent(infowindowcontent);
+        infowindow.open(map,yelpMarker);
+    });
 }
