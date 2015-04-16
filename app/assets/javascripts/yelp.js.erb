@@ -42,6 +42,7 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   }
   infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
   infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
+  infowindowcontent += '<div>'+'<p id="reviewHeader">Reviews</p>'+'<div>';
 
   // display info window on yelp marker click
   var yelpInfoWindow = new google.maps.InfoWindow();
@@ -97,7 +98,11 @@ function createYelpMarker(map, business){
 }
 
 function getYelpReviews(businessID){
-  $.post('/business', { id: businessID }, function(data) {
-    console.log(data);
+  $.post('/business', { id: businessID }, function(review) {
+    var userName = review.reviews[0].user.name;
+    var rating = review.reviews[0].rating;
+    var excerpt = review.reviews[0].excerpt;
+    var userImage = review.reviews[0].user.image_url;
+    var ratingImage = review.reviews[0].rating_image_url;
   });
 }

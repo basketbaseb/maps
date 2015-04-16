@@ -83,3 +83,8 @@ a{
   color: #4272DB;
   text-decoration: none;
 }
+
+#reviewHeader{
+  margin-top: 7px;
+  border-bottom: 1px solid gainsboro;
+}
