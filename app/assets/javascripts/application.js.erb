@@ -174,17 +174,7 @@ function createYelpMarker(map, business){
         });
 
   yelpArray.push(yelpMarker);
-  var infowindowcontent = makeYelpInfoWindow(business);
-  
-  var yelpInfoWindow = new google.maps.InfoWindow();
-  google.maps.event.addListener(yelpMarker, 'click', function() {
-  yelpInfoWindow.setContent(infowindowcontent);
-  yelpInfoWindow.open(map,yelpMarker);
 
-  // remove marker info window
-  // We may want to move this to when one of the buttons is clicked in the infoWindow
-  // once we add more functionality to it. But just closing it here for now
-  infoWindow.close();
-  });
+  var infowindowcontent = makeYelpInfoWindow(business, yelpMarker, infoWindow);
 }
 

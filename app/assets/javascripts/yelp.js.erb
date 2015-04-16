@@ -1,6 +1,6 @@
 // gets information from business object returned from yelp api and creates an info window 
 // which is associated to each yelpMarker on click.
-function makeYelpInfoWindow(business){
+function makeYelpInfoWindow(business, yelpMarker, infoWindow){
 	var businessName = business.name;
   	var streetName = business.location.address[0];
   	var cityName = business.location.city;
@@ -19,5 +19,15 @@ function makeYelpInfoWindow(business){
   	infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
   	infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
 
-  	return infowindowcontent; 	
+  	// display info window on yelp marker click
+  	var yelpInfoWindow = new google.maps.InfoWindow();
+  	google.maps.event.addListener(yelpMarker, 'click', function() {
+  	yelpInfoWindow.setContent(infowindowcontent);
+  	yelpInfoWindow.open(map,yelpMarker);
+
+  	// remove marker info window
+  	// We may want to move this to when one of the buttons is clicked in the infoWindow
+  	// once we add more functionality to it. But just closing it here for now
+  	infoWindow.close();
+  	});
 }
