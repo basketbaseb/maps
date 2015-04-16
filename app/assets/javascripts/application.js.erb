@@ -123,15 +123,21 @@ var searchTerm = "food";
 var coordinates = {latitude: markerLatLng.k, longitude: markerLatLng.D};
 // post to the search with the search term, take the response data
 // and process it
+var bounds = new google.maps.LatLngBounds();
+var LatLngList = [];
 $.post('/search', { term: searchTerm, coordinates: coordinates }, function(data) {
 // iterate through each business in the response capture the data
 data['businesses'].forEach(function(business, index) {
-console.log(business.name);
+// make array of LatLng objects of each yelp business
+LatLngList.push(new google.maps.LatLng(business.location.coordinate.latitude, business.location.coordinate.longitude)); 
+// extend bounds of map to include each yelp business' lat/lng
+bounds.extend(LatLngList[index]);
 createYelpMarker(map, business);
 });
+// fit bounds of map to bounds object
+map.fitBounds(bounds);
+map.setZoom(map.getZoom()-1);
 });
-map.setZoom(13);
-map.panTo(markerLatLng)
 }
 
 // create yelp markers on map using lat/lng
