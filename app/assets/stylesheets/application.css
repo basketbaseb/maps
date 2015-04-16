@@ -44,3 +44,42 @@ padding-left: 5px
 #context-menu:hover {
   background: #eee;
 }
+
+#business_name{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#streetName{
+  margin: 0px;
+  margin-top: -13px;
+}
+
+#cityLine{
+  margin: 1px;
+}
+
+#rating{
+  color: #F05D05;
+  font-size: 20px;
+  font-style: bold;
+  margin: 0px;
+}
+
+#businessImage{
+  margin-top: -19px;
+}
+
+#phoneNumber{
+  margin-top: -25px;
+  margin-bottom: 25px;
+}
+
+#ratingImage{
+  margin-left: 5px;
+}
+
+a{
+  color: #4272DB;
+  text-decoration: none;
+}
