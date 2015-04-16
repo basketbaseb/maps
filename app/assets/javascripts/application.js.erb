@@ -192,9 +192,15 @@ function createYelpMarker(map, business){
   infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
   infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
   
-  var infowindow = new google.maps.InfoWindow();
+  var yelpInfoWindow = new google.maps.InfoWindow();
   google.maps.event.addListener(yelpMarker, 'click', function() {
-        infowindow.setContent(infowindowcontent);
-        infowindow.open(map,yelpMarker);
-    });
+    yelpInfoWindow.setContent(infowindowcontent);
+    yelpInfoWindow.open(map,yelpMarker);
+  });
+
+  // remove marker info window
+  // We may want to move this to when one of the buttons is clicked in the infoWindow
+  // once we add more functionality to it. But just closing it here for now
+  infoWindow.close();
 }
+
