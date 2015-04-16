@@ -14,35 +14,43 @@ function sendMarkerToYelp(map){
 // gets information from business object returned from yelp api and creates an info window 
 // which is associated to each yelpMarker on click.
 function makeYelpInfoWindow(business, yelpMarker, infoWindow){
+  var number_exists = true;
 	var businessName = business.name;
-  	var streetName = business.location.address[0];
-  	var cityName = business.location.city;
-  	var stateName = business.location.state_code;
-  	var zipCode = business.location.postal_code;
-  	var phoneNumber = business.phone;
+  var streetName = business.location.address[0];
+  var cityName = business.location.city;
+  var stateName = business.location.state_code;
+  var zipCode = business.location.postal_code;
+  var phoneNumber = business.phone;
+  if(phoneNumber != undefined){
   	var formattedNumber = phoneNumber.slice(0,3)+'-'+phoneNumber.slice(3,6)+'-'+phoneNumber.slice(6,10);
-  	var ratingImage = business.rating_img_url;
-  	var rating = business.rating; 
+  }
+  else{
+    number_exists = false;
+  }
+  var ratingImage = business.rating_img_url;
+  var rating = business.rating; 
 
-  	var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
+  var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
  	infowindowcontent += '<p id="streetName">'+streetName+'</p>';
-  	infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
-  	infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
-  	infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
-  	infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
-  	infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
+  infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
+  infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
+  if(number_exists){
+    infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
+  }
+  infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
+  infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
 
-  	// display info window on yelp marker click
-  	var yelpInfoWindow = new google.maps.InfoWindow();
-  	google.maps.event.addListener(yelpMarker, 'click', function() {
-  	yelpInfoWindow.setContent(infowindowcontent);
-  	yelpInfoWindow.open(map,yelpMarker);
+  // display info window on yelp marker click
+  var yelpInfoWindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(yelpMarker, 'click', function() {
+  yelpInfoWindow.setContent(infowindowcontent);
+  yelpInfoWindow.open(map,yelpMarker);
 
-  	// remove marker info window
-  	// We may want to move this to when one of the buttons is clicked in the infoWindow
-  	// once we add more functionality to it. But just closing it here for now
-  	infoWindow.close();
-  	});
+  // remove marker info window
+  // We may want to move this to when one of the buttons is clicked in the infoWindow
+  // once we add more functionality to it. But just closing it here for now
+  infoWindow.close();
+  });
 }
 
 // using yelp api we get food businesses near marker lat/lng. Sends post request
