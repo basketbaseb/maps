@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
-
 var canCreateMarker = true;
 var yelpArray = [];
 
@@ -145,27 +144,57 @@ var searchTerm = "food";
 var coordinates = {latitude: markerLatLng.k, longitude: markerLatLng.D};
 // post to the search with the search term, take the response data
 // and process it
+var bounds = new google.maps.LatLngBounds();
+var LatLngList = [];
 $.post('/search', { term: searchTerm, coordinates: coordinates }, function(data) {
 // iterate through each business in the response capture the data
 data['businesses'].forEach(function(business, index) {
-console.log(business.name);
+// make array of LatLng objects of each yelp business
+LatLngList.push(new google.maps.LatLng(business.location.coordinate.latitude, business.location.coordinate.longitude)); 
+// extend bounds of map to include each yelp business' lat/lng
+bounds.extend(LatLngList[index]);
 createYelpMarker(map, business);
 });
+// fit bounds of map to bounds object
+map.fitBounds(bounds);
+map.setZoom(map.getZoom()-1);
 });
-map.setZoom(13);
-map.panTo(markerLatLng)
 }
 
 // create yelp markers on map using lat/lng
 function createYelpMarker(map, business){
   var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
-  var image = {url: '<%= asset_path 'yelp.png' %>',
-               size: new google.maps.Size(25, 35)};
-  var marker = new google.maps.Marker({
+  var image = {url: '<%= asset_path 'yelp-marker.png' %>',
+               size: new google.maps.Size(32, 32)};
+  var yelpMarker = new google.maps.Marker({
           position: coords,
           animation: google.maps.Animation.DROP,
           map: map,
           icon: image
         });
-  yelpArray.push(marker);
+
+  yelpArray.push(yelpMarker);
+  var businessName = business.name;
+  var streetName = business.location.address[0];
+  var cityName = business.location.city;
+  var stateName = business.location.state_code;
+  var zipCode = business.location.postal_code;
+  var phoneNumber = business.phone;
+  var formattedNumber = phoneNumber.slice(0,3)+'-'+phoneNumber.slice(3,6)+'-'+phoneNumber.slice(6,10);
+  var ratingImage = business.rating_img_url;
+  var rating = business.rating; 
+
+  var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
+  infowindowcontent += '<p id="streetName">'+streetName+'</p>';
+  infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
+  infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
+  infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
+  infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
+  infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
+  
+  var infowindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(yelpMarker, 'click', function() {
+        infowindow.setContent(infowindowcontent);
+        infowindow.open(map,yelpMarker);
+    });
 }
