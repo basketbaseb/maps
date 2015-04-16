@@ -117,8 +117,8 @@ ContextMenu.prototype.removeMarker = function() {
     if($("#image-container").children().length <= 1) {
       // animate it back off screen
       // for some reason this doesn't work
-      $("#image-container").animate({ "bottom" : "-100px" });
-      $("#image-container").toggle();
+      $("#image-container").animate({ "bottom" : "-120px" });
+      $("#image-container").toggle("slow");
     }
   }
   // remove the marker from the array
