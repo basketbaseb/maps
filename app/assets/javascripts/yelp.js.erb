@@ -29,6 +29,9 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   }
   var ratingImage = business.rating_img_url;
   var rating = business.rating; 
+  
+  // get the business' yelp reviews
+  var reviews = getYelpReviews(business.id);
 
   var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
  	infowindowcontent += '<p id="streetName">'+streetName+'</p>';
@@ -79,16 +82,22 @@ function searchYelp(map, markerLatLng){
 
 // create yelp markers on map using lat/lng
 function createYelpMarker(map, business){
-  	var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
-  	var image = {url: '<%= asset_path 'yelp-marker.png' %>',
+  var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
+  var image = {url: '<%= asset_path 'yelp-marker.png' %>',
                size: new google.maps.Size(32, 32)};
-  	var yelpMarker = new google.maps.Marker({
+  var yelpMarker = new google.maps.Marker({
           position: coords,
           animation: google.maps.Animation.DROP,
           map: map,
           icon: image
-        });
+  });
 
-  	yelpArray.push(yelpMarker);
-  	makeYelpInfoWindow(business, yelpMarker, infoWindow);
+  yelpArray.push(yelpMarker);
+  makeYelpInfoWindow(business, yelpMarker, infoWindow);
+}
+
+function getYelpReviews(businessID){
+  $.post('/business', { id: businessID }, function(data) {
+    console.log(data);
+  });
 }
