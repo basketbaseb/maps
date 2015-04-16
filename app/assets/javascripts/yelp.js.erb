@@ -1,3 +1,16 @@
+var yelpArray = [];
+
+function sendMarkerToYelp(map){
+	// delete all yelp markers already on map before displaying new ones
+	if(yelpArray.length != 0){
+ 		for (var i = 0; i < yelpArray.length; i++) {
+    	yelpArray[i].setMap(null);
+  		}
+	}
+	// contained in yelp.js.erb
+	searchYelp(map,markerPosition);
+}
+
 // gets information from business object returned from yelp api and creates an info window 
 // which is associated to each yelpMarker on click.
 function makeYelpInfoWindow(business, yelpMarker, infoWindow){
