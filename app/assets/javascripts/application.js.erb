@@ -137,8 +137,8 @@ map.panTo(markerLatLng)
 // create yelp markers on map using lat/lng
 function createYelpMarker(map, business){
   var coords = {lat: business.location.coordinate.latitude, lng: business.location.coordinate.longitude};
-  var image = {url: '<%= asset_path 'yelp.png' %>',
-               size: new google.maps.Size(25, 35)};
+  var image = {url: '<%= asset_path 'yelp-marker.png' %>',
+               size: new google.maps.Size(32, 32)};
   var marker = new google.maps.Marker({
           position: coords,
           animation: google.maps.Animation.DROP,
