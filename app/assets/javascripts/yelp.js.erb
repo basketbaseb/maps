@@ -1,0 +1,23 @@
+// gets information from business object returned from yelp api and creates an info window 
+// which is associated to each yelpMarker on click.
+function makeYelpInfoWindow(business){
+	var businessName = business.name;
+  	var streetName = business.location.address[0];
+  	var cityName = business.location.city;
+  	var stateName = business.location.state_code;
+  	var zipCode = business.location.postal_code;
+  	var phoneNumber = business.phone;
+  	var formattedNumber = phoneNumber.slice(0,3)+'-'+phoneNumber.slice(3,6)+'-'+phoneNumber.slice(6,10);
+  	var ratingImage = business.rating_img_url;
+  	var rating = business.rating; 
+
+  	var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
+ 	infowindowcontent += '<p id="streetName">'+streetName+'</p>';
+  	infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
+  	infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
+  	infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
+  	infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
+  	infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
+
+  	return infowindowcontent; 	
+}
