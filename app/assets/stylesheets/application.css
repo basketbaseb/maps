@@ -88,3 +88,27 @@ a{
   margin-top: 7px;
   border-bottom: 1px solid gainsboro;
 }
+
+#roundedRect{
+  width: 35px;
+  height: 35px;
+  border-radius: 10%;
+  overflow: hidden;
+}
+
+#username{
+  margin-bottom: 3px;
+  color: #3B65A7;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+#userImage{
+  height: 40px;
+  width: 40px;
+}
+
+#reviewRatingImg{
+  margin-top: 3px;
+  height: 11px;
+}

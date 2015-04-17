@@ -12,19 +12,6 @@ function sendMarkerToYelp(map){
 	searchYelp(map,markerPosition);
 }
 
-function getYelpReviews(businessID){
-  $.post('/business', { id: businessID }, function(review) {
-    userName = review.reviews[0].user.name;
-    rating = review.reviews[0].rating;
-    excerpt = review.reviews[0].excerpt;
-    userImage = review.reviews[0].user.image_url;
-    ratingImage = review.reviews[0].rating_image_url;
-
-    reviewInfo = '<div>'+'<p id="username">'+userName+'</p>'+'</div>';
-    console.log(reviewInfo);
-  });
-}
-
 // gets information from business object returned from yelp api and creates an info window 
 // which is associated to each yelpMarker on click.
 function makeYelpInfoWindow(business, yelpMarker, infoWindow){
@@ -45,31 +32,41 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   var rating = business.rating; 
   
   // get the business' yelp review
-  var review = getYelpReviews(business.id)
-  setTimeout(function() {console.log(review)},3000);
+  $.post('/business', { id: business.id }, function(review) {
+    userName = review.reviews[0].user.name;
+    rating = review.reviews[0].rating;
+    excerpt = review.reviews[0].excerpt;
+    userImage = review.reviews[0].user.image_url;
+    ratingImage = review.reviews[0].rating_image_url;
+    //build the review html
+    reviewInfo = '<div>'+'<p id="username">'+userName+'</p>';
+    reviewInfo +='<div id="roundedRect"><img id="userImage"src="'+userImage+'""></div>';
+    reviewInfo +='<div id="reviewRating">'+'<img id="reviewRatingImg"src="'+ratingImage+'">'+'</div>';
+  
+    // build the business info window html
+    var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
+ 	  infowindowcontent += '<p id="streetName">'+streetName+'</p>';
+    infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
+    infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
+    if(number_exists){
+      infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
+    }
+    infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
+    infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
+    infowindowcontent += '<div>'+'<p id="reviewHeader">Top Review</p>'+'<div>';
+    infowindowcontent += reviewInfo;
 
-  var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
- 	infowindowcontent += '<p id="streetName">'+streetName+'</p>';
-  infowindowcontent += '<p id="cityLine">' + cityName+', '+stateName+' '+zipCode+'</p>';
-  infowindowcontent += '<p id="businessURL"><a href="'+business.url+'" target="_blank">Click here for more info</a></p><br>';
-  if(number_exists){
-    infowindowcontent += '<p id="phoneNumber">'+formattedNumber+'</p>';
-  }
-  infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
-  infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
-  infowindowcontent += '<div>'+'<p id="reviewHeader">Top Review</p>'+'<div>';
-  infowindowcontent += review;
+    // display info window on yelp marker click
+    var yelpInfoWindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(yelpMarker, 'click', function() {
+      yelpInfoWindow.setContent(infowindowcontent);
+      yelpInfoWindow.open(map,yelpMarker);
 
-  // display info window on yelp marker click
-  var yelpInfoWindow = new google.maps.InfoWindow();
-  google.maps.event.addListener(yelpMarker, 'click', function() {
-  yelpInfoWindow.setContent(infowindowcontent);
-  yelpInfoWindow.open(map,yelpMarker);
-
-  // remove marker info window
-  // We may want to move this to when one of the buttons is clicked in the infoWindow
-  // once we add more functionality to it. But just closing it here for now
-  infoWindow.close();
+      // remove marker info window
+      // We may want to move this to when one of the buttons is clicked in the infoWindow
+      // once we add more functionality to it. But just closing it here for now
+      infoWindow.close();
+    });
   });
 }
 
