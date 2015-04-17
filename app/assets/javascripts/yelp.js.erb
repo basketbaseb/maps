@@ -1,4 +1,5 @@
 var yelpArray = [];
+var userName, rating, excerpt, userImage, ratingImage, reviewInfo;
 
 function sendMarkerToYelp(map){
 	// delete all yelp markers already on map before displaying new ones
@@ -9,6 +10,19 @@ function sendMarkerToYelp(map){
 	}
 	// contained in yelp.js.erb
 	searchYelp(map,markerPosition);
+}
+
+function getYelpReviews(businessID){
+  $.post('/business', { id: businessID }, function(review) {
+    userName = review.reviews[0].user.name;
+    rating = review.reviews[0].rating;
+    excerpt = review.reviews[0].excerpt;
+    userImage = review.reviews[0].user.image_url;
+    ratingImage = review.reviews[0].rating_image_url;
+
+    reviewInfo = '<div>'+'<p id="username">'+userName+'</p>'+'</div>';
+    console.log(reviewInfo);
+  });
 }
 
 // gets information from business object returned from yelp api and creates an info window 
@@ -30,8 +44,9 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   var ratingImage = business.rating_img_url;
   var rating = business.rating; 
   
-  // get the business' yelp reviews
-  var reviews = getYelpReviews(business.id);
+  // get the business' yelp review
+  var review = getYelpReviews(business.id)
+  setTimeout(function() {console.log(review)},3000);
 
   var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
  	infowindowcontent += '<p id="streetName">'+streetName+'</p>';
@@ -42,7 +57,8 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   }
   infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
   infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
-  infowindowcontent += '<div>'+'<p id="reviewHeader">Reviews</p>'+'<div>';
+  infowindowcontent += '<div>'+'<p id="reviewHeader">Top Review</p>'+'<div>';
+  infowindowcontent += review;
 
   // display info window on yelp marker click
   var yelpInfoWindow = new google.maps.InfoWindow();
@@ -97,12 +113,3 @@ function createYelpMarker(map, business){
   makeYelpInfoWindow(business, yelpMarker, infoWindow);
 }
 
-function getYelpReviews(businessID){
-  $.post('/business', { id: businessID }, function(review) {
-    var userName = review.reviews[0].user.name;
-    var rating = review.reviews[0].rating;
-    var excerpt = review.reviews[0].excerpt;
-    var userImage = review.reviews[0].user.image_url;
-    var ratingImage = review.reviews[0].rating_image_url;
-  });
-}
