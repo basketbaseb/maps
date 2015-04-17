@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root 'welcome#index'
   post '/search' => 'welcome#search'
+  post '/business' => 'welcome#business'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
