@@ -87,6 +87,7 @@ a{
 #reviewHeader{
   margin-top: 7px;
   border-bottom: 1px solid gainsboro;
+  margin-bottom: 0px
 }
 
 #roundedRect{
@@ -98,6 +99,7 @@ a{
 
 #username{
   margin-bottom: 3px;
+  margin-top: 6px;
   color: #3B65A7;
   font-weight: bold;
   font-size: 11px;
@@ -111,4 +113,26 @@ a{
 #reviewRatingImg{
   margin-top: 3px;
   height: 11px;
+}
+
+#excerpt{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  max-width: 300px;
+}
+
+#excerpt-wrapper{
+  margin-left: 0px;
+  padding-left: 0px;
+  border-left-width: 0px;
+  margin-right: 0px;
+  padding-right: 0px;
+  display: inline-block;
+  float: right;
+  margin-top: 15px;
+}
+
+#user-wrapper{
+  float: left;
+  margin-right: 5px;
 }

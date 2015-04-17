@@ -16,6 +16,7 @@ function sendMarkerToYelp(map){
 // which is associated to each yelpMarker on click.
 function makeYelpInfoWindow(business, yelpMarker, infoWindow){
   var number_exists = true;
+  var excerpt_exists = true;
 	var businessName = business.name;
   var streetName = business.location.address[0];
   var cityName = business.location.city;
@@ -36,12 +37,19 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
     userName = review.reviews[0].user.name;
     rating = review.reviews[0].rating;
     excerpt = review.reviews[0].excerpt;
+    if(excerpt == undefined){
+      excerpt_exists = false;
+    }
     userImage = review.reviews[0].user.image_url;
     ratingImage = review.reviews[0].rating_image_url;
     //build the review html
-    reviewInfo = '<div>'+'<p id="username">'+userName+'</p>';
+    reviewInfo = '<div id="review-wrapper"><div id="user-wrapper">'+'<p id="username">'+userName+'</p>';
     reviewInfo +='<div id="roundedRect"><img id="userImage"src="'+userImage+'""></div>';
-    reviewInfo +='<div id="reviewRating">'+'<img id="reviewRatingImg"src="'+ratingImage+'">'+'</div>';
+    reviewInfo +='<div id="reviewRating">'+'<img id="reviewRatingImg"src="'+ratingImage+'">'+'</div></div>';
+    if(excerpt_exists){
+    reviewInfo +='<div id="excerpt-wrapper">'+'<p id="excerpt">'+excerpt+'</p>'+'</div>';
+    }
+    reviewInfo+= '</div>';
   
     // build the business info window html
     var infowindowcontent = '<h4 id="business_name"><strong>'+businessName+'</strong></h4><br>';
@@ -53,7 +61,7 @@ function makeYelpInfoWindow(business, yelpMarker, infoWindow){
     }
     infowindowcontent += '<img id="businessImage" src="'+business.image_url+'"><br>';
     infowindowcontent += '<div>'+'<p id="rating">'+rating+'<img id="ratingImage"src="'+ratingImage+'">'+'</p>'+'</div>';
-    infowindowcontent += '<div>'+'<p id="reviewHeader">Top Review</p>'+'<div>';
+    infowindowcontent += '<div>'+'<p id="reviewHeader">Top Review</p>'+'</div>';
     infowindowcontent += reviewInfo;
 
     // display info window on yelp marker click
