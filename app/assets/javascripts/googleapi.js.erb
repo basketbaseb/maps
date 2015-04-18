@@ -1,4 +1,17 @@
-function setStreetView(coords){
+function setStreetView(coords, yelpMarker){
+    var panoramaOptions = {
+               position: coords,
+               pov: {
+                   heading: 0,
+                   pitch: 0
+                       },
+           scrollwheel: false,
+           linksControl: false,
+           panControl: false,
+           addressControlOptions: {
+              position: google.maps.ControlPosition.TOP_RIGHT
+              }
+                 };
 	var svTest = new google.maps.StreetViewService();
     svTest.getPanoramaByLocation(coords, 50, function(data,status){
     	// data.location is position of the pano image of the marker clicked
@@ -17,18 +30,18 @@ function setStreetView(coords){
         	// here we actually get the street pano and display it in the pano container with id=divID
             var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
             panorama.myDiv = divID;
-            marker.pano = panorama; // add pano variable to marker
+            yelpMarker.pano = panorama; // add pano variable to marker
             panArray.push(panorama);
             divCount++;
 
             //hovering over pano image in image-container animates its associated marker on the map
             $(document.getElementById(divID)).hover(function(){ 
-            	if (marker.getAnimation() != null) {
-            		marker.setAnimation(null);
+            	if (yelpMarker.getAnimation() != null) {
+            		yelpMarker.setAnimation(null);
             	} 
             	else {
-            		marker.setAnimation(google.maps.Animation.BOUNCE);
-                	map.panTo(marker.position);
+            		yelpMarker.setAnimation(google.maps.Animation.BOUNCE);
+                	map.panTo(yelpMarker.position);
             	}
             }); //end of hover
         } 
