@@ -1,0 +1,36 @@
+function setStreetView(coords){
+	var svTest = new google.maps.StreetViewService();
+    svTest.getPanoramaByLocation(coords, 50, function(data,status){
+    	// data.location is position of the pano image of the marker clicked
+        if(status == "OK"){
+        	// jquery to have image-container scroll from bottom on marker click
+            if( $("#image-container").css('display', 'none')){
+            	$('#image-container').animate({ 'bottom' : '0px' });     
+                $("#image-container").toggle();
+                var divID = "pano" + divCount;
+                // pano containers are added to image-container here
+                $( "#image-container" ).prepend( "<div class='box' id="+divID+"></div>" );
+                if( $("#image-container").children().length > 6){
+                	$("#image-container").css('overflow-x', 'scroll');
+                }
+           	}
+        	// here we actually get the street pano and display it in the pano container with id=divID
+            var panorama = new google.maps.StreetViewPanorama(document.getElementById(divID), panoramaOptions); 
+            panorama.myDiv = divID;
+            marker.pano = panorama; // add pano variable to marker
+            panArray.push(panorama);
+            divCount++;
+
+            //hovering over pano image in image-container animates its associated marker on the map
+            $(document.getElementById(divID)).hover(function(){ 
+            	if (marker.getAnimation() != null) {
+            		marker.setAnimation(null);
+            	} 
+            	else {
+            		marker.setAnimation(google.maps.Animation.BOUNCE);
+                	map.panTo(marker.position);
+            	}
+            }); //end of hover
+        } 
+	});
+}
